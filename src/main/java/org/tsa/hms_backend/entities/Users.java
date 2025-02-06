@@ -1,9 +1,9 @@
-package org.tsa.gym_backend.entities;
+package org.tsa.hms_backend.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.tsa.gym_backend.enums.Gender;
-import org.tsa.gym_backend.enums.Role;
+import org.tsa.hms_backend.enums.Gender;
+import org.tsa.hms_backend.enums.Role;
 
 import java.time.LocalDate;
 

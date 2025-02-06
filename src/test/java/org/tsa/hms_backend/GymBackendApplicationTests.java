@@ -1,4 +1,4 @@
-package org.tsa.gym_backend;
+package org.tsa.hms_backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
