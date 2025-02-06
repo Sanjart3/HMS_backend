@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.tsa</groupId>
-    <artifactId>GYM_backend</artifactId>
+    <artifactId>HMS_backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>GYM_backend</name>
     <description>GYM_backend</description>
