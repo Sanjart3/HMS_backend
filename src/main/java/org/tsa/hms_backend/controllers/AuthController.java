@@ -1,20 +1,27 @@
 package org.tsa.hms_backend.controllers;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.tsa.hms_backend.dtos.LoginDto;
-import org.tsa.hms_backend.dtos.SignUpDto;
+import org.tsa.hms_backend.dtos.PatientsDto;
+import org.tsa.hms_backend.entities.Patients;
+import org.tsa.hms_backend.services.PatientService;
 
 @Controller
 @RequestMapping("auth")
+@AllArgsConstructor
 public class AuthController {
 
+    private final PatientService patientService;
+
     @PostMapping("sign-up")
-    public ResponseEntity signUp(@RequestBody SignUpDto signUpDto) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Patients> signUp(@RequestBody PatientsDto signUpDto) {
+        Patients savedPatient = patientService.signup(signUpDto);
+        return ResponseEntity.ok().body(savedPatient);
     }
 
     @PostMapping("login")
