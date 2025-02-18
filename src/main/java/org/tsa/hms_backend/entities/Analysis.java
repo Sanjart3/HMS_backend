@@ -1,4 +1,4 @@
-package org.tsa.gym_backend.entities;
+package org.tsa.hms_backend.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

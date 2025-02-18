@@ -1,8 +1,8 @@
-package org.tsa.gym_backend.entities;
+package org.tsa.hms_backend.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.tsa.gym_backend.enums.BloodGroup;
+import org.tsa.hms_backend.enums.BloodGroup;
 
 import java.util.List;
 
