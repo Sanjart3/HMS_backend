@@ -19,9 +19,9 @@ public class AuthController {
     private final PatientService patientService;
 
     @PostMapping("sign-up")
-    public ResponseEntity<Patients> signUp(@RequestBody PatientsDto signUpDto) {
-        Patients savedPatient = patientService.signup(signUpDto);
-        return ResponseEntity.ok().body(savedPatient);
+    public ResponseEntity<String> signUp(@RequestBody PatientsDto signUpDto) {
+        String token = patientService.signup(signUpDto);
+        return ResponseEntity.ok().body(token);
     }
 
     @PostMapping("login")
