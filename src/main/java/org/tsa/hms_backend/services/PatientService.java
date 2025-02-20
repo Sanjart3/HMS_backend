@@ -28,10 +28,6 @@ public class PatientService {
         return jwtService.generateToken(savedPatient.getUser());
     }
 
-    public Patients signin(String username, String password) {
-        return null;
-    }
-
     public Patients findById(Long id) {
         return patientRepository.findById(id).orElse(null);
     }

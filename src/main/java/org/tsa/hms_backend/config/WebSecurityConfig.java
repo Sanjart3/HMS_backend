@@ -25,7 +25,7 @@ public class WebSecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtTokenFilter jwtTokenFilter;
 
-    static final String[] AUTH_WHITELIST = {"/auth/sign-up", "/auth/login"};
+    static final String[] AUTH_WHITELIST = {"/auth/sign-up", "/auth/login", "/auth/login/**"};
 
     @Autowired
     public WebSecurityConfig(@Lazy UserDetailsService userDetailsService, @Lazy JwtTokenFilter jwtTokenFilter) {

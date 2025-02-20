@@ -19,5 +19,5 @@ spring:
             show_sql: true
 
 jwt:
-  key: hms_346_493_key_@&
+  key: kEiPj0NvZbN/U1o4X5xqv39Z5aBwd+0RmLhoV5f0T4Y=
   expiration: 86400000
