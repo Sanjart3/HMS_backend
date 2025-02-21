@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class PasswordChangeDto {
-    private String username;
-    private String oldPassword;
+    private String email;
     private String newPassword;
 }

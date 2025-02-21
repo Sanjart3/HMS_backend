@@ -1,7 +1,9 @@
 package org.tsa.hms_backend.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.tsa.hms_backend.config.JWTService;
 import org.tsa.hms_backend.converters.PatientConverter;
 import org.tsa.hms_backend.dtos.PasswordChangeDto;
 import org.tsa.hms_backend.dtos.PatientsDto;
@@ -17,13 +19,13 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
     private final PatientConverter patientConverter;
+    private final JWTService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
-    public Patients signup(PatientsDto patientsDto) {
-        return patientRepository.save(patientConverter.toEntity(patientsDto));
-    }
-
-    public Patients signin(String username, String password) {
-        return null;
+    public String signup(PatientsDto patientsDto) {
+        patientsDto.getUser().setPassword(passwordEncoder.encode(patientsDto.getUser().getPassword()));
+        Patients savedPatient = patientRepository.save(patientConverter.toEntity(patientsDto));
+        return jwtService.generateToken(savedPatient.getUser());
     }
 
     public Patients findById(Long id) {
@@ -53,8 +55,10 @@ public class PatientService {
         if (existingPatient == null) {
             return false;
         }
-        if (existingPatient.getUser().getEmail().equals(passwordChangeDto.getUsername())&&existingPatient.getUser().getPassword().equals(passwordChangeDto.getOldPassword())) {
-            existingPatient.getUser().setPassword(passwordChangeDto.getNewPassword());
+
+        if (existingPatient.getUser().getEmail().equals(passwordChangeDto.getEmail())) {
+            existingPatient.getUser().setPassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
+            patientRepository.save(existingPatient);
             return true;
         }
         return false;
