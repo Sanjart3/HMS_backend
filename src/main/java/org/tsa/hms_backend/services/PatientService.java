@@ -55,8 +55,10 @@ public class PatientService {
         if (existingPatient == null) {
             return false;
         }
-        if (existingPatient.getUser().getEmail().equals(passwordChangeDto.getUsername())&&existingPatient.getUser().getPassword().equals(passwordChangeDto.getOldPassword())) {
-            existingPatient.getUser().setPassword(passwordChangeDto.getNewPassword());
+
+        if (existingPatient.getUser().getEmail().equals(passwordChangeDto.getEmail())) {
+            existingPatient.getUser().setPassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
+            patientRepository.save(existingPatient);
             return true;
         }
         return false;
