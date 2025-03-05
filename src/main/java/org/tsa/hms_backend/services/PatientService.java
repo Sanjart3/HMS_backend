@@ -1,6 +1,8 @@
 package org.tsa.hms_backend.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.tsa.hms_backend.config.JWTService;
@@ -64,7 +66,12 @@ public class PatientService {
         return false;
     }
 
-    public List<Doctors> getDoctors() {
-        return List.of();
+    public List<Doctors> getDoctors(Long id) {
+        return patientRepository.getAssignedDoctorsByPatientId(id);
+    }
+
+    public List<Patients> getPatientsFilter(Integer page, Integer limit, String patientName) {
+        Pageable pageable = PageRequest.of(page-1, limit>0 ?limit:10);
+        return patientRepository.getPatientsFilter(patientName, pageable);
     }
 }
