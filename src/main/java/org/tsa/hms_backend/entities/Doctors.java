@@ -13,12 +13,15 @@ public class Doctors {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private Users user;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DoctorSchedule> schedules;
+
+    @ManyToMany(mappedBy = "visitedDoctors")
+    private List<Patients> patients;
 
     @Column(name = "department", nullable = false)
     private String department;
