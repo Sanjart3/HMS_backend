@@ -9,6 +9,7 @@ import org.tsa.hms_backend.entities.Doctors;
 import org.tsa.hms_backend.entities.Patients;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctors, Long> {
@@ -34,4 +35,7 @@ public interface DoctorRepository extends JpaRepository<Doctors, Long> {
         WHERE d.id = :doctorId
         """)
     List<Patients> findPatientsByDoctorId(@Param("doctorId") Long id);
+
+    @Query("SELECT ds.doctor FROM DoctorSchedule ds WHERE ds.id = :scheduleId")
+    Optional<Doctors> findByScheduleId(Long scheduleId);
 }

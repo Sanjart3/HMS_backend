@@ -25,7 +25,10 @@ public class WebSecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtTokenFilter jwtTokenFilter;
 
-    static final String[] AUTH_WHITELIST = {"/auth/sign-up", "/auth/login", "/auth/login/**"};
+    static final String[] AUTH_WHITELIST = {"/auth/sign-up", "/auth/login", "/auth/login/**",
+            "/v3/api-docs/**",          // OpenAPI JSON docs
+            "/swagger-ui/**",           // Swagger UI
+            "/swagger-ui.html"};
 
     @Autowired
     public WebSecurityConfig(@Lazy UserDetailsService userDetailsService, @Lazy JwtTokenFilter jwtTokenFilter) {

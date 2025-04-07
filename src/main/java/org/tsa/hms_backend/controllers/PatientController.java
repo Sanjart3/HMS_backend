@@ -3,7 +3,6 @@ package org.tsa.hms_backend.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.tsa.hms_backend.dtos.PasswordChangeDto;
 import org.tsa.hms_backend.dtos.PatientsDto;
@@ -13,7 +12,7 @@ import org.tsa.hms_backend.services.PatientService;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("patient")
 @RequiredArgsConstructor
 public class PatientController {

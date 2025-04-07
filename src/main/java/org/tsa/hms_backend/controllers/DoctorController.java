@@ -3,7 +3,6 @@ package org.tsa.hms_backend.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.tsa.hms_backend.dtos.DoctorFilterDto;
 import org.tsa.hms_backend.dtos.DoctorUpdateDto;
@@ -14,7 +13,7 @@ import org.tsa.hms_backend.services.DoctorService;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("doctor")
 @RequiredArgsConstructor
 public class DoctorController {

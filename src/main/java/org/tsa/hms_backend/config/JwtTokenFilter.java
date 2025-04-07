@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.tsa.hms_backend.exceptions.UnAuthorizedException;
+import org.tsa.hms_backend.exceptions.BadLoginException;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -53,7 +53,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         String username;
         try {
             username = jwtService.extractEmail(token);
-        } catch (UnAuthorizedException e) {
+        } catch (BadLoginException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setHeader("Message", e.getMessage());
             return;
