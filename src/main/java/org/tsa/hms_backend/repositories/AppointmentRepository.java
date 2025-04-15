@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import org.tsa.hms_backend.entities.Appointments;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Optional;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointments, Long> {
@@ -27,4 +29,6 @@ public interface AppointmentRepository extends JpaRepository<Appointments, Long>
                                                 @Param("doctorId") Long doctorId,
                                                 @Param("isConfirmed") boolean isConfirmed,
                                                 Pageable pageable);
+
+    Optional<Appointments> findByDoctorIdAndDateAndStartTime(Long doctorId, LocalDate date, LocalTime startTime);
 }

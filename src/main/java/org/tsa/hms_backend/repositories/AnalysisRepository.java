@@ -13,13 +13,11 @@ public interface AnalysisRepository extends JpaRepository<Analysis, Long> {
     @Query("""
             SELECT a FROM Analysis a
             WHERE (:analysisName IS NULL OR a.name = :analysisName)
-            AND (:analysisDescription IS NULL OR a.description ILIKE CONCAT('%', :analysisName, '%'))
             AND (:price IS NULL OR a.price <= :price)
             AND (:analysisRoom IS NULL OR a.room = :analysisRoom)
             AND (:analysisType IS NULL OR a.analysisType.name = :analysisType)
     """)
     Page<Analysis> findFilteredAnalysis(@Param("analysisName") String analysisName,
-                                        @Param("description") String description,
                                         @Param("price") Integer price,
                                         @Param("analysisRoom") String analysisRoom,
                                         @Param("analysisType") String analysisTypeName,

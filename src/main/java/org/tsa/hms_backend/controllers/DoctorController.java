@@ -1,6 +1,7 @@
 package org.tsa.hms_backend.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,14 +28,14 @@ public class DoctorController {
     }
 
     @GetMapping("get")
-    public ResponseEntity<List<Doctors>> getDoctors(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size,
+    public ResponseEntity<Page<Doctors>> getDoctors(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
                                                     @RequestParam(required = false) String name,
                                                     @RequestParam(required = false) String gender,
                                                     @RequestParam(required = false) String department,
                                                     @RequestParam(required = false) String specialization,
                                                     @RequestParam(required = false, name = "appointment_cost") Integer appointmentCost) {
         DoctorFilterDto filter = new DoctorFilterDto(name, gender, department, specialization, appointmentCost);
-        List<Doctors> doctorsList = doctorService.getFilteredDoctors(page, size, filter);
+        Page<Doctors> doctorsList = doctorService.getFilteredDoctors(page, size, filter);
         return new ResponseEntity<>(doctorsList, HttpStatus.OK);
     }
 

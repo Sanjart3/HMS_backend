@@ -1,5 +1,7 @@
 package org.tsa.hms_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.tsa.hms_backend.enums.BloodGroup;
@@ -25,14 +27,16 @@ public class Patients {
     @Column(name = "blood_group", nullable = false)
     private BloodGroup bloodGroup;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "patient_doctor",
             joinColumns = @JoinColumn(name = "patient_id"),
             inverseJoinColumns = @JoinColumn(name = "doctor_id")
     )
+    @JsonIgnore
     private List<Doctors> visitedDoctors;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<Appointments> appointments;
 }

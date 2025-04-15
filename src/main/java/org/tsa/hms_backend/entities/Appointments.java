@@ -1,5 +1,6 @@
 package org.tsa.hms_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,10 +17,12 @@ public class Appointments {
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
+    @JsonManagedReference
     private Doctors doctor;
 
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
+    @JsonManagedReference
     private Patients patient;
 
     @Column(name = "date", nullable = false)

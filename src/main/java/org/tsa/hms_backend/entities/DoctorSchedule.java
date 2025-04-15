@@ -15,13 +15,13 @@ public class DoctorSchedule {
     private Long id;
 
     @Column(name = "schedule_date", nullable = false)
-    private LocalDate scheduleDate; // Changed from String to LocalDate
+    private LocalDate scheduleDate;
 
     @Column(name = "start_time", nullable = false)
-    private LocalTime startTime; // Changed from String to LocalTime
+    private LocalTime startTime;
 
     @Column(name = "end_time", nullable = false)
-    private LocalTime endTime; // Changed from String to LocalTime
+    private LocalTime endTime;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
