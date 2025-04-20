@@ -16,7 +16,12 @@ spring:
       properties:
           hibernate:
             format_sql: true
-            show_sql: true
+            show_sql: false
+
+springdoc:
+  api-docs:
+    server:
+      url:  https://33ab-90-156-197-210.ngrok-free.app
 
 jwt:
   key: kEiPj0NvZbN/U1o4X5xqv39Z5aBwd+0RmLhoV5f0T4Y=

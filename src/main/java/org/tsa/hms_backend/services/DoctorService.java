@@ -1,10 +1,13 @@
 package org.tsa.hms_backend.services;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.tsa.hms_backend.converters.DoctorConverter;
+import org.tsa.hms_backend.dtos.DoctorDto;
 import org.tsa.hms_backend.dtos.DoctorFilterDto;
 import org.tsa.hms_backend.dtos.DoctorUpdateDto;
 import org.tsa.hms_backend.dtos.PasswordChangeDto;
@@ -16,8 +19,16 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class DoctorService {
     private final DoctorRepository doctorRepository;
+    private final DoctorConverter doctorConverter;
+
+    public DoctorDto addDoctor(DoctorDto doctorDto) {
+        log.info("Adding new doctor {}", doctorDto);
+        Doctors doctor = doctorConverter.toEntity(doctorDto);
+        return doctorConverter.toDto(doctorRepository.save(doctor));
+    }
 
     public List<Doctors> getAllDoctors() {
         return doctorRepository.findAll();
@@ -25,6 +36,7 @@ public class DoctorService {
 
     public Page<Doctors> getFilteredDoctors(Integer page, Integer limit, DoctorFilterDto filter) {
         Pageable pageable = PageRequest.of(page, (limit>0)?limit:10);
+        log.info("Getting doctors from page");
         return doctorRepository.findFilteredDoctors(filter.getName(), filter.getGender(), filter.getDepartment(), filter.getSpecialization(), filter.getAppointmentCost(), pageable);
     }
 

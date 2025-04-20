@@ -1,10 +1,5 @@
 package org.tsa.hms_backend.dtos.result;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import org.tsa.hms_backend.entities.AnalysisType;
 import org.tsa.hms_backend.entities.Doctors;
@@ -13,9 +8,11 @@ import org.tsa.hms_backend.entities.Doctors;
 public class AnalysisDto {
     private Long id;
 
-    private Doctors doctor;
+    private String doctorName;
 
-    private AnalysisType analysisType;
+    private String patientName;
+
+    private String analysisType;
 
     private String name;
 

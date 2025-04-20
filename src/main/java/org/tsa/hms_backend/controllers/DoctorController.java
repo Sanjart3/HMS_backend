@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.tsa.hms_backend.dtos.DoctorDto;
 import org.tsa.hms_backend.dtos.DoctorFilterDto;
 import org.tsa.hms_backend.dtos.DoctorUpdateDto;
 import org.tsa.hms_backend.dtos.PasswordChangeDto;
@@ -15,20 +16,28 @@ import org.tsa.hms_backend.services.DoctorService;
 import java.util.List;
 
 @RestController
-@RequestMapping("doctor")
+@RequestMapping("/doctor")
 @RequiredArgsConstructor
+@CrossOrigin()
 public class DoctorController {
 
     private final DoctorService doctorService;
 
-    @GetMapping("get-all")
+    @PostMapping("add")
+    public ResponseEntity<DoctorDto> addDoctor(@RequestBody DoctorDto dto) {
+
+        DoctorDto doctor = doctorService.addDoctor(dto);
+        return new ResponseEntity<>(doctor, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/get-all")
     public ResponseEntity<List<Doctors>> getAllDoctors() {
         List<Doctors> allDoctors = doctorService.getAllDoctors();
         return new ResponseEntity<>(allDoctors, HttpStatus.OK);
     }
 
     @GetMapping("get")
-    public ResponseEntity<Page<Doctors>> getDoctors(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+    public ResponseEntity<List<Doctors>> getDoctors(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
                                                     @RequestParam(required = false) String name,
                                                     @RequestParam(required = false) String gender,
                                                     @RequestParam(required = false) String department,
@@ -36,7 +45,7 @@ public class DoctorController {
                                                     @RequestParam(required = false, name = "appointment_cost") Integer appointmentCost) {
         DoctorFilterDto filter = new DoctorFilterDto(name, gender, department, specialization, appointmentCost);
         Page<Doctors> doctorsList = doctorService.getFilteredDoctors(page, size, filter);
-        return new ResponseEntity<>(doctorsList, HttpStatus.OK);
+        return new ResponseEntity<>(doctorsList.getContent(), HttpStatus.OK);
     }
 
     @GetMapping("{id}/profile")
