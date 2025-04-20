@@ -1,6 +1,7 @@
 package org.tsa.hms_backend.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class DoctorService {
         return doctorRepository.findAll();
     }
 
-    public List<Doctors> getFilteredDoctors(Integer page, Integer limit, DoctorFilterDto filter) {
+    public Page<Doctors> getFilteredDoctors(Integer page, Integer limit, DoctorFilterDto filter) {
         Pageable pageable = PageRequest.of(page, (limit>0)?limit:10);
         return doctorRepository.findFilteredDoctors(filter.getName(), filter.getGender(), filter.getDepartment(), filter.getSpecialization(), filter.getAppointmentCost(), pageable);
     }
@@ -54,7 +55,7 @@ public class DoctorService {
     }
 
     public List<Patients> getPatientsByDoctor(Long id) {
-        return doctorRepository.findPatientsByDoctorId(id);
+        return doctorRepository.getPatientsByDoctorId(id);
     }
 
     public Doctors prepareForUpdate(Doctors existingDoctor, DoctorUpdateDto dto) {

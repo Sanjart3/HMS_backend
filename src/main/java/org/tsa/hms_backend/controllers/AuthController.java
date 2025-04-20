@@ -2,16 +2,16 @@ package org.tsa.hms_backend.controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.tsa.hms_backend.dtos.LoginDto;
 import org.tsa.hms_backend.dtos.PatientsDto;
 import org.tsa.hms_backend.services.PatientService;
 import org.tsa.hms_backend.services.UserDetailsServiceImpl;
 
-@Controller
+@RestController
 @RequestMapping("auth")
 @AllArgsConstructor
 public class AuthController {

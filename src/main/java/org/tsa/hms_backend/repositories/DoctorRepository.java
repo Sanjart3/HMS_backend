@@ -1,5 +1,6 @@
 package org.tsa.hms_backend.repositories;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,19 +10,20 @@ import org.tsa.hms_backend.entities.Doctors;
 import org.tsa.hms_backend.entities.Patients;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctors, Long> {
 
     @Query("""
             SELECT d FROM Doctors d
-            WHERE (:name IS NULL OR CONCAT(d.user.firstName, d.user.lastName) ILIKE CONCAT('%', :name, '%'))
+            WHERE (:name IS NULL OR CONCAT(d.user.firstName, d.user.lastName) ILIKE CONCAT('%', CAST(:name AS STRING), '%'))
             AND (:gender IS NULL OR d.user.gender = :gender)
             AND (:department IS NULL OR d.department = :department)
             AND (:specialization IS NULL OR d.specialization = :specialization)
-            AND (:appointment IS NULL OR d.appointCost <= :appointment)
+            AND (:appointmentCost IS NULL OR d.appointCost <= :appointmentCost)
             """)
-    List<Doctors> findFilteredDoctors(@Param("name") String name,
+    Page<Doctors> findFilteredDoctors(@Param("name") String name,
                                       @Param("gender") String gender,
                                       @Param("department") String department,
                                       @Param("specialization") String specialization,
@@ -34,4 +36,14 @@ public interface DoctorRepository extends JpaRepository<Doctors, Long> {
         WHERE d.id = :doctorId
         """)
     List<Patients> findPatientsByDoctorId(@Param("doctorId") Long id);
+
+    @Query("SELECT ds.doctor FROM DoctorSchedule ds WHERE ds.id = :scheduleId")
+    Optional<Doctors> findByScheduleId(Long scheduleId);
+
+    @Query("""
+            SELECT a.patient FROM Doctors d
+            JOIN Appointments a ON d.id = a.doctor.id
+            WHERE d.id = :id
+    """)
+    List<Patients> getPatientsByDoctorId(@Param("id") Long id);
 }

@@ -1,7 +1,14 @@
 package org.tsa.hms_backend.exceptions;
 
-public class BadLoginException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class BadLoginException extends ResponseException {
     public BadLoginException() {
         super("Bad login credentials");
+    }
+
+    @Override
+    public HttpStatus getStatus() {
+        return HttpStatus.UNAUTHORIZED;
     }
 }

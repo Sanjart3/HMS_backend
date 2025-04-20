@@ -1,6 +1,7 @@
 package org.tsa.hms_backend.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,6 +22,7 @@ public class AnalysisType {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "analysisType", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "analysisType", orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<Analysis> analyses;
 }

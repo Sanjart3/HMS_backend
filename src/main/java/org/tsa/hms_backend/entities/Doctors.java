@@ -1,5 +1,7 @@
 package org.tsa.hms_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,10 +19,12 @@ public class Doctors {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private Users user;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<DoctorSchedule> schedules;
 
-    @ManyToMany(mappedBy = "visitedDoctors")
+    @ManyToMany(mappedBy = "visitedDoctors", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Patients> patients;
 
     @Column(name = "department", nullable = false)
