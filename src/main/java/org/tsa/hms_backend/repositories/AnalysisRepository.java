@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.tsa.hms_backend.entities.Analysis;
 import org.tsa.hms_backend.entities.Doctors;
+import org.tsa.hms_backend.entities.Patients;
 
 import java.util.List;
 
@@ -27,4 +28,6 @@ public interface AnalysisRepository extends JpaRepository<Analysis, Long> {
                                         Pageable pageable);
 
     List<Analysis> findAllByDoctor(Doctors doctor);
+
+    List<Analysis> findAllByPatients(Patients existingPatient);
 }

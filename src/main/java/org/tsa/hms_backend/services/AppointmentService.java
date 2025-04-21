@@ -1,6 +1,7 @@
 package org.tsa.hms_backend.services;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +26,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final PatientRepository patientRepository;
@@ -34,6 +36,7 @@ public class AppointmentService {
     public Page<AppointmentDto> getAppointments(int page, int size,
                                               LocalDate from, LocalDate to,
                                               Long patientId, Long doctorId, boolean isConfirmed) {
+        log.info("Getting appointments List");
         Pageable pageable = PageRequest.of(Math.max(page, 0), (size>0)?size:10);
         Page<Appointments> appointments = appointmentRepository.findFilteredAppointments(from, to, patientId, doctorId, isConfirmed, pageable);
         List<AppointmentDto> appointmentDtos = appointmentConverter.getAppointmentDtoList(appointments.getContent());
@@ -41,6 +44,7 @@ public class AppointmentService {
     }
 
     public AppointmentDto createAppointment(Appointments appointment, Long patientId, Long scheduleId) {
+        log.info("Creating appointment {}", appointment);
         Patients patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id: " + patientId));
         Doctors doctor = doctorRepository.findByScheduleId(scheduleId)
@@ -52,6 +56,7 @@ public class AppointmentService {
     }
 
     public AppointmentDto confirmAppointment(Long doctorId, Long appointmentId, AppointmentConfirmationDto confirmationDto) {
+        log.info("Confirming appointment {}", confirmationDto);
         Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Doctors doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor not found with this id: "+doctorId));

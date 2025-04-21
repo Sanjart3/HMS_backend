@@ -17,12 +17,10 @@ public class Appointments {
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
-    @JsonManagedReference
     private Doctors doctor;
 
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
-    @JsonManagedReference(value = "patient-appointment")
     private Patients patient;
 
     @Column(name = "date", nullable = false)
@@ -35,5 +33,5 @@ public class Appointments {
     private LocalTime endTime;
 
     @Column(name = "is_confirmed", nullable = false)
-    private Boolean isConfirmed;
+    private Boolean isConfirmed = false;
 }
