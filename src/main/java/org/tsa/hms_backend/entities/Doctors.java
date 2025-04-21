@@ -27,7 +27,7 @@ public class Doctors {
     @JsonIgnore
     private List<Patients> patients;
 
-    @Column(name = "department", nullable = false)
+    @Column(name = "department")
     private String department;
 
     @Column(name = "specialization", nullable = false)

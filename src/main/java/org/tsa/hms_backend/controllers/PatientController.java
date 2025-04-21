@@ -13,8 +13,9 @@ import org.tsa.hms_backend.services.PatientService;
 import java.util.List;
 
 @RestController
-@RequestMapping("patient")
+@RequestMapping("/patient")
 @RequiredArgsConstructor
+@CrossOrigin()
 public class PatientController {
 
     private final PatientService patientService;
@@ -44,10 +45,9 @@ public class PatientController {
         return ResponseEntity.ok(assignedDoctors);
     }
 
-    @GetMapping("pagination")
-    public ResponseEntity<List<Patients>> pagination(@RequestParam Integer page, @RequestParam Integer limit,
-                                               @RequestParam String name){
-        List<Patients> patients = patientService.getPatientsFilter(page, limit, name);
+    @GetMapping("/pagination")
+    public ResponseEntity<List<Patients>> pagination(@RequestParam(required = false) String name){
+        List<Patients> patients = patientService.getPatientsFilter(name);
         return new ResponseEntity<>(patients, HttpStatus.OK);
     }
 }

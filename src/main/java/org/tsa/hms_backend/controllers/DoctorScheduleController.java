@@ -17,6 +17,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/schedule")
 @AllArgsConstructor
+@CrossOrigin()
 public class DoctorScheduleController {
 
     private final DoctorScheduleService doctorScheduleService;

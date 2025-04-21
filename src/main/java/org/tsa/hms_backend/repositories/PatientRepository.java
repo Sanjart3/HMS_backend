@@ -27,5 +27,5 @@ public interface PatientRepository extends JpaRepository<Patients, Long> {
             SELECT p FROM Patients p
             WHERE (:patientName IS NULL OR CONCAT(p.user.firstName, p.user.lastName) ILIKE :patientName)
             """)
-    List<Patients> getPatientsFilter(@Param("patientName") String patientName, Pageable pageable);
+    List<Patients> getPatientsFilter(@Param("patientName") String patientName);
 }

@@ -1,8 +1,7 @@
 package org.tsa.hms_backend.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.tsa.hms_backend.config.JWTService;
@@ -17,6 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PatientService {
 
     private final PatientRepository patientRepository;
@@ -25,16 +25,19 @@ public class PatientService {
     private final PasswordEncoder passwordEncoder;
 
     public String signup(PatientsDto patientsDto) {
+        log.info("Creating new patient: {}", patientsDto);
         patientsDto.getUser().setPassword(passwordEncoder.encode(patientsDto.getUser().getPassword()));
         Patients savedPatient = patientRepository.save(patientConverter.toEntity(patientsDto));
         return jwtService.generateToken(savedPatient.getUser());
     }
 
     public Patients findById(Long id) {
+        log.info("Finding patient by id: {}", id);
         return patientRepository.findById(id).orElse(null);
     }
 
     public Patients update(PatientsDto patientsDto, Long id) {
+        log.info("Updating patient with id: {}", id);
         Patients existingPatient = patientRepository.findById(id).orElse(null);
         if (existingPatient == null) {
             return null;
@@ -53,6 +56,7 @@ public class PatientService {
     }
 
     public Boolean changePassword(PasswordChangeDto passwordChangeDto, Long id) {
+        log.info("Changing password for user with id: {}", id);
         Patients existingPatient = patientRepository.findById(id).orElse(null);
         if (existingPatient == null) {
             return false;
@@ -67,11 +71,12 @@ public class PatientService {
     }
 
     public List<Doctors> getDoctors(Long id) {
+        log.info("Getting doctors for user with id: {}", id);
         return patientRepository.getAssignedDoctorsByPatientId(id);
     }
 
-    public List<Patients> getPatientsFilter(Integer page, Integer limit, String patientName) {
-        Pageable pageable = PageRequest.of(page-1, limit>0 ?limit:10);
-        return patientRepository.getPatientsFilter(patientName, pageable);
+    public List<Patients> getPatientsFilter( String patientName) {
+        log.info("Getting patients filter for user with name: {}", patientName);
+        return patientRepository.getPatientsFilter(patientName);
     }
 }

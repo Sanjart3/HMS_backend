@@ -32,7 +32,7 @@ public class DataLoader implements CommandLineRunner {
         saveDoctorSchedule(doctor);
         saveAppointment(doctor, patient);
         AnalysisType analysisType = saveAnalysisType();
-        saveAnalysis(doctor, analysisType);
+        saveAnalysis(doctor, patient, analysisType);
         System.out.println("📦 Sample data loaded successfully.");
     }
 
@@ -110,9 +110,10 @@ public class DataLoader implements CommandLineRunner {
         return analysisTypeRepository.save(analysisType);
     }
 
-    private void saveAnalysis(Doctors doctor, AnalysisType analysisType){
+    private void saveAnalysis(Doctors doctor, Patients patient, AnalysisType analysisType){
         Analysis analysis = new Analysis();
         analysis.setDoctor(doctor);
+        analysis.setPatients(patient);
         analysis.setAnalysisType(analysisType);
         analysis.setName("Full CBC");
         analysis.setDescription("Complete Blood Count");

@@ -11,21 +11,23 @@ import org.tsa.hms_backend.entities.Appointments;
 import org.tsa.hms_backend.services.AppointmentService;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/appointment")
 @RequiredArgsConstructor
+@CrossOrigin()
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
 
     @GetMapping("/get")
-    public ResponseEntity<Page<AppointmentDto>> getAppointments(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int limit,
-                                                              @RequestParam(required = false) LocalDate fromDate, @RequestParam(required = false)LocalDate toDate,
-                                                              @RequestParam(required = false) Long patientId, @RequestParam(required = false) Long doctorId,
-                                                              @RequestParam(defaultValue = "true") boolean confirmed) {
+    public ResponseEntity<List<AppointmentDto>> getAppointments(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int limit,
+                                                                @RequestParam(required = false) LocalDate fromDate, @RequestParam(required = false)LocalDate toDate,
+                                                                @RequestParam(required = false) Long patientId, @RequestParam(required = false) Long doctorId,
+                                                                @RequestParam(required = false) boolean confirmed) {
         Page<AppointmentDto> appointments = appointmentService.getAppointments(page, limit, fromDate, toDate, patientId, doctorId, confirmed);
-        return new ResponseEntity<>(appointments, HttpStatus.OK);
+        return new ResponseEntity<>(appointments.getContent(), HttpStatus.OK);
     }
 
     @PostMapping("{patientId}/appointment/{scheduleId}")

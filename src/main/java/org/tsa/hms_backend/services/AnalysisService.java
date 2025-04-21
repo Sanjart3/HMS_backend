@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.tsa.hms_backend.converters.AnalysisConverter;
 import org.tsa.hms_backend.dtos.AnalysisFilterDto;
+import org.tsa.hms_backend.dtos.result.AnalysisDto;
 import org.tsa.hms_backend.entities.Analysis;
 import org.tsa.hms_backend.entities.AnalysisType;
 import org.tsa.hms_backend.exceptions.ResourceNotFoundException;
@@ -21,7 +21,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -29,14 +28,16 @@ public class AnalysisService {
 
     private final AnalysisRepository analysisRepository;
     private final AnalysisTypeRepository analysisTypeRepository;
+    private final AnalysisConverter analysisConverter;
 
     public List<AnalysisType> analysisTypes(){
         return analysisTypeRepository.findAll();
     }
 
-    public Analysis findAnalysisById(Long id) {
-        return analysisRepository.findById(id)
+    public AnalysisDto findAnalysisById(Long id) {
+        Analysis analysis = analysisRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Analysis not found with id: " + id));
+        return analysisConverter.toDto(analysis);
     }
 
     public Analysis createAnalysis(Analysis analysis) {
@@ -74,13 +75,15 @@ public class AnalysisService {
     }
 
     public Analysis prepareUpdateAnalysis(Long id, Analysis analysis) {
-        Analysis analysisToUpdate = findAnalysisById(id);
+        Analysis analysisToUpdate = analysisRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Analysis not found with id: " + id));
         Analysis updatingAnalysis = prepareUpdateAnalysis(analysisToUpdate, analysis);
         return analysisRepository.save(updatingAnalysis);
     }
 
     public void deleteAnalysis(Long id) {
-        Analysis analysisToDelete = findAnalysisById(id);
+        Analysis analysisToDelete = analysisRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Analysis not found with id: " + id));
         analysisRepository.delete(analysisToDelete);
     }
 

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.tsa.hms_backend.dtos.AnalysisFilterDto;
+import org.tsa.hms_backend.dtos.result.AnalysisDto;
 import org.tsa.hms_backend.entities.Analysis;
 import org.tsa.hms_backend.entities.AnalysisType;
 import org.tsa.hms_backend.services.AnalysisService;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/analysis")
 @RequiredArgsConstructor
+@CrossOrigin()
 public class AnalysisController {
 
     private final AnalysisService analysisService;
@@ -28,8 +30,8 @@ public class AnalysisController {
     }
 
     @GetMapping("/{analysisId}/info")
-    public ResponseEntity<Analysis> getAnalysisInfo(@PathVariable("analysisId") Long analysisId) {
-        Analysis analyses = analysisService.findAnalysisById(analysisId);
+    public ResponseEntity<AnalysisDto> getAnalysisInfo(@PathVariable("analysisId") Long analysisId) {
+        AnalysisDto analyses = analysisService.findAnalysisById(analysisId);
         return new ResponseEntity<>(analyses, HttpStatus.OK);
     }
 

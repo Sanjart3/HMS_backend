@@ -17,6 +17,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -26,8 +31,8 @@ public class WebSecurityConfig {
     private final JwtTokenFilter jwtTokenFilter;
 
     static final String[] AUTH_WHITELIST = {"/auth/sign-up", "/auth/login", "/auth/login/**",
-            "/v3/api-docs/**",          // OpenAPI JSON docs
-            "/swagger-ui/**",           // Swagger UI
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
             "/swagger-ui.html"};
 
     @Autowired
@@ -42,13 +47,11 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(AUTH_WHITELIST).permitAll()
-                        .requestMatchers("api/trainee/**").hasRole("TRAINEE")
-                        .requestMatchers("api/trainer/**").hasRole("TRAINER")
                         .anyRequest().authenticated())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors(AbstractHttpConfigurer::disable);
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         return http.build();
     }
@@ -65,6 +68,25 @@ public class WebSecurityConfig {
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         return daoAuthenticationProvider;
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOriginPatterns(List.of(
+                "http://localhost:3000",
+                "https://hms-superadmin.vercel.app",
+                "https://*.ngrok-free.app"
+        ));
+//        config.setAllowedOriginPatterns(List.of("*"));
+        config.setAllowedMethods(List.of("*"));   // GET, POST, PUT, DELETE, OPTIONS, PATCH
+        config.setAllowedHeaders(List.of("*"));   // any header
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {

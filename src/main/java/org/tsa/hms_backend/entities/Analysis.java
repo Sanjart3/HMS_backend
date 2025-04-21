@@ -1,9 +1,8 @@
 package org.tsa.hms_backend.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+
 
 @Entity
 @Table(name = "ANALYSIS")
@@ -15,8 +14,12 @@ public class Analysis {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", nullable = false)
-    @JsonIgnore
+//    @JsonIgnore
     private Doctors doctor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", nullable = false)
+    private Patients patients;
 
     @ManyToOne()
     @JoinColumn(name = "analysis_type_id", nullable = false)
