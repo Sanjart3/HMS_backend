@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.tsa.hms_backend.entities.Analysis;
+import org.tsa.hms_backend.entities.Doctors;
+
+import java.util.List;
 
 @Repository
 public interface AnalysisRepository extends JpaRepository<Analysis, Long> {
@@ -22,4 +25,6 @@ public interface AnalysisRepository extends JpaRepository<Analysis, Long> {
                                         @Param("analysisRoom") String analysisRoom,
                                         @Param("analysisType") String analysisTypeName,
                                         Pageable pageable);
+
+    List<Analysis> findAllByDoctor(Doctors doctor);
 }
