@@ -22,7 +22,7 @@ public class Appointments {
 
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
-    @JsonManagedReference
+    @JsonManagedReference(value = "patient-appointment")
     private Patients patient;
 
     @Column(name = "date", nullable = false)

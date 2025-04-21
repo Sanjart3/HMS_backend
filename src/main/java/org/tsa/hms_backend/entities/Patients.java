@@ -1,6 +1,5 @@
 package org.tsa.hms_backend.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -37,6 +36,6 @@ public class Patients {
     private List<Doctors> visitedDoctors;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
+    @JsonIgnore
     private List<Appointments> appointments;
 }

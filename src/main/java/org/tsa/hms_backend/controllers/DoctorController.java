@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.tsa.hms_backend.dtos.DoctorDto;
 import org.tsa.hms_backend.dtos.DoctorFilterDto;
 import org.tsa.hms_backend.dtos.DoctorUpdateDto;
 import org.tsa.hms_backend.dtos.PasswordChangeDto;
@@ -24,9 +23,8 @@ public class DoctorController {
     private final DoctorService doctorService;
 
     @PostMapping("add")
-    public ResponseEntity<DoctorDto> addDoctor(@RequestBody DoctorDto dto) {
-
-        DoctorDto doctor = doctorService.addDoctor(dto);
+    public ResponseEntity<Doctors> addDoctor(@RequestBody Doctors doctorEntity) {
+        Doctors doctor = doctorService.addDoctor(doctorEntity);
         return new ResponseEntity<>(doctor, HttpStatus.CREATED);
     }
 
@@ -48,13 +46,13 @@ public class DoctorController {
         return new ResponseEntity<>(doctorsList.getContent(), HttpStatus.OK);
     }
 
-    @GetMapping("{id}/profile")
+    @GetMapping("/{id}/profile")
     public ResponseEntity<Doctors> getProfile(@PathVariable Long id) {
         Doctors doctor = doctorService.getDoctorById(id);
         return new ResponseEntity<>(doctor, HttpStatus.OK);
     }
 
-    @PutMapping("{id}/update")
+    @PutMapping("/{id}/update")
     public ResponseEntity<Doctors> updateDoctor(@PathVariable Long id,
                                        @RequestBody DoctorUpdateDto dto) {
         Doctors doctor = doctorService.updateDoctor(id, dto);
