@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tsa.hms_backend.dtos.PasswordChangeDto;
-import org.tsa.hms_backend.dtos.PatientsDto;
 import org.tsa.hms_backend.entities.Doctors;
 import org.tsa.hms_backend.entities.Patients;
 import org.tsa.hms_backend.services.PatientService;
@@ -28,8 +27,8 @@ public class PatientController {
 
     @PutMapping("{id}/update")
     public ResponseEntity<Patients> update(@PathVariable Long id,
-                                 @RequestBody PatientsDto patientUpdateDto){
-        Patients updatedPatient = patientService.update(patientUpdateDto, id);
+                                 @RequestBody Patients patientUpdate){
+        Patients updatedPatient = patientService.update(patientUpdate, id);
         return ResponseEntity.ok().body(updatedPatient);
     }
 
@@ -49,5 +48,11 @@ public class PatientController {
     public ResponseEntity<List<Patients>> pagination(@RequestParam(required = false) String name){
         List<Patients> patients = patientService.getPatientsFilter(name);
         return new ResponseEntity<>(patients, HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}/delete")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        patientService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

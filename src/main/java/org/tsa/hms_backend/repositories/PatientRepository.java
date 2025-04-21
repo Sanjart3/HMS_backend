@@ -21,7 +21,7 @@ public interface PatientRepository extends JpaRepository<Patients, Long> {
             SELECT p.visitedDoctors FROM Patients p
             WHERE p.id = :patientId
             """)
-    List<Doctors> getAssignedDoctorsByPatientId(@Param("id") Long id);
+    List<Doctors> getAssignedDoctorsByPatientId(@Param("patientId") Long patientId);
 
     @Query("""
             SELECT p FROM Patients p
